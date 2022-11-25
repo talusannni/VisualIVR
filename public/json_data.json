@@ -1,0 +1,26 @@
+{
+    "components": [
+        {
+            "input": true,
+            "key": "number",
+            "tableView": false,
+            "label": "Number",
+            "type": "number"
+        },
+        {
+            "input": true,
+            "key": "password",
+            "protected": true,
+            "tableView": false,
+            "label": "Password",
+            "type": "password"
+        },
+        {
+            "input": true,
+            "key": "submit",
+            "tableView": false,
+            "label": "Submit",
+            "type": "button"
+        }
+    ]
+}
