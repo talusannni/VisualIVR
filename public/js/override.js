@@ -1,7 +1,9 @@
 let builder = {};
 let jsonElement = document.getElementById('json');
 let formElement = document.getElementById('formio');
-function formBuilder(data={}){
+function formBuilder(data={components: []}){
+  Formio.icons = 'fontawesome';
+  //Formio.use(FormioPrettyCheckboxes);
   builder = new Formio.FormBuilder(document.getElementById("builder"), data, {
     noNewEdit: true,
     noDefaultSubmitButton: true,
@@ -66,6 +68,7 @@ formBuilder();
 var onBuild = function(build) {
   jsonElement.innerHTML = '';
   jsonElement.appendChild(document.createTextNode(JSON.stringify(builder.instance.schema, null, 4)));
+  localStorage.setItem($(".pageName.active").attr("id"), JSON.stringify(builder.instance.schema, null, 4));
   Formio.createForm(formElement, builder.instance.form).then((form) => {
     // Prevent the submission from going to the form.io server.
     form.nosubmit = true;
@@ -92,6 +95,9 @@ var onBuild = function(build) {
     // What to do when the submit failed.
     form.on('submitError', function(submission) {
       //window.location = '/app/thanks.html';
+    });
+    form.on('componentChanged', (changed) => {
+      console.log('Data was changed!', changed);
     });
     /*if (!form.checkValidity(null, false, null, true)) {
       alert('The form is invalid!');

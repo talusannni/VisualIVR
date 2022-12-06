@@ -39,42 +39,46 @@
                 </div>
             </div>
         </div>
-        <div class="container py-4">
-            <div><h1>Projects</h1></div>
-            <div><button class="create-modal btn btn-success">Add</button></div>
-            <table class="table" id="table">
-                <thead>
-                    <tr>
-                        <th class="text-center">#</th>
-                        <th class="text-center">Project Name</th>
-                        <th class="text-center">Created At</th>
-                        <th class="text-center">Updated At</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($data as $item)
-                    <tr class="item{{$item->id}}">
-                        <td>{{$item->id}}</td>
-                        <td>{{$item->project_name}}</td>
-                        <td>{{$item->created_at}}</td>
-                        <td>{{$item->updated_at}}</td>
-                        <td><button onclick="location.href='{{ url('/project/design/'.$item->id) }}'" class="btn btn-success"
-                            data-info="{{$item->id}}">
-                            <span class="glyphicon glyphicon-edit"></span> Design
-                        </button>
-                        <button class="edit-modal btn btn-info"
-                            data-info="{{$item->id}},{{$item->project_name}},{{$item->description}}">
-                            <span class="glyphicon glyphicon-edit"></span> Edit
-                        </button>
-                        <button class="delete-modal btn btn-danger"
-                            data-info="{{$item->id}},{{$item->project_name}}">
-                            <span class="glyphicon glyphicon-trash"></span> Delete
-                        </button></td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                Projects
+                <button class="create-modal btn btn-success btn-sm">+ Add</button>
+            </div>
+            <div class="card-body">
+                <table class="table" id="table">
+                    <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th class="text-center">Project Name</th>
+                            <th class="text-center">Created At</th>
+                            <th class="text-center">Updated At</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($data as $item)
+                        <tr class="item{{$item->id}}">
+                            <td>{{$item->id}}</td>
+                            <td>{{$item->project_name}}</td>
+                            <td>{{$item->created_at}}</td>
+                            <td>{{$item->updated_at}}</td>
+                            <td><button onclick="location.href='{{ url('/project/design/'.$item->id) }}'" class="btn btn-success btn-sm"
+                                data-info="{{$item->id}}">
+                                <i class="fa fa-magic" aria-hidden="true"></i> Design
+                            </button>
+                            <button class="edit-modal btn btn-info btn-sm"
+                                data-info="{{$item->id}},{{$item->project_name}},{{$item->description}}">
+                                <i class="fa fa-pencil" aria-hidden="true"></i> Edit
+                            </button>
+                            <button class="delete-modal btn btn-danger btn-sm"
+                                data-info="{{$item->id}},{{$item->project_name}}">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+                            </button></td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

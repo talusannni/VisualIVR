@@ -21,6 +21,8 @@
         "sass-loader": "^11.0.1"
     },
     "dependencies": {
+        "@formio/pretty-checkbox": "^1.4.0",
+        "font-awesome": "^4.7.0",
         "formiojs": "^4.14.10",
         "jquery": "^3.6.1"
     }

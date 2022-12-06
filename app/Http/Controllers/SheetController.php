@@ -59,6 +59,7 @@ class SheetController extends Controller
             $data = $request->except('_method','_token','submit','form');
             $sheet = Sheet::find($request->get('id'));
             $sheet->path = $path;
+            $sheet->next = $request->get('next');
             $sheet->update($data);
         }catch(Throwable $e){
             Log::error($e->getMessage());
@@ -77,7 +78,7 @@ class SheetController extends Controller
     public function show(Sheet $sheet)
     {
         try{
-            return Storage::disk('local')->get($sheet->path);
+            return response()->json(['next' => $sheet->next, 'json' => Storage::disk('local')->get($sheet->path)]);
         }catch(Throwable $e){
         }
     }

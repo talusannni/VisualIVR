@@ -18,6 +18,7 @@ class Sheet extends Migration
         $table->increments('id');
         $table->string('sheet_name');
         $table->text('path')->nullable();
+        $table->integer('next')->unsigned()->default('0');
         $table->integer('project_id')->unsigned();
         $table->index('id');
         $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');

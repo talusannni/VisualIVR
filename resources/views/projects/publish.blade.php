@@ -1,4 +1,5 @@
 <x-layout>
+    <!--script src="{{ asset("js/formio-pretty-checkboxes.min.js")}}"></script-->
     <style>
         /* Context menu */
         .context-menu{
@@ -22,6 +23,24 @@
         .context-menu ul li:hover{
             cursor: pointer;
             background-color: #eee;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            overflow-x: hidden;
+            transition: 0.5s;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                width: 100%;
+            }
         }
     </style>
     <div id="createModal" class="modal fade" role="dialog">
@@ -98,7 +117,7 @@
                         //add error
                     }else {
                         $('#createModal').modal('hide');
-                        $('#Dmanager').append("<div class='row'><div class='col pageName' id='"+ data.id +"'>"+$('#sname').val()+"</div></div>");
+                        $('#fileManager').append('<a href="#" class="list-group-item list-group-item-action py-2 ripple pageName" aria-current="true" id="'+ data.id +'">'+$('#sname').val()+'</a>');
                     }
                 },
                 error: function (error) {
@@ -137,7 +156,6 @@
             $.ajax({
                 type: 'POST',
                 url: Url,
-                dataType: 'json',
                 data: {
                     "id": $('#txt_id').val()
                 },
@@ -157,11 +175,6 @@
             });
         });
     </script>
-    <div id="app">
-        <div class="container py-4">
-            <div class="h1">Pages</div>
-            <div id="duploEditor"></div>
-        </div>
-    </div>
+    <div id="duploEditor"></div>
     <!--script src='{{ asset('js/override.js') }}'></script-->
 </x-layout>

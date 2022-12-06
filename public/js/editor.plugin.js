@@ -13,12 +13,22 @@ $.widget( "nmk.duploEditor", {
     },
     _create: function() {
         this.element.addClass('row');
-        $( "<div>", { id: "Dmanager", "class": "col-sm-2 border" }).appendTo( this.element );
-        $( "<div>", { id: "Dcontent", "class": "col-sm-10 border" }).appendTo( this.element );
+        $( "<div>", { id: "Dcontent"}).appendTo( this.element );
+        $( `<nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white border-end border-dark">
+            <div class="position-sticky">
+                <div class="list-group list-group-flush mx-3 mt-4" id="fileManager"></div>
+            </div>
+        </nav>` ).insertAfter( $( "header" ) );
+        $('#root').css('margin-left', '200px');
+        $('.navbar').css('margin-left', '200px');
+        $('footer').css('margin-left', '200px');
+        $( "<div>", { id: "Dcontent", "class": "col-sm-10" }).appendTo( this.element );
         $("#Dcontent").html(`<div id="tabs">
             <ul>
-                <li><a href="#tabs-1">Form Builder</a></li>
-                <li><a href="#tabs-2">Preview</a></li>
+                <!--li><a href="#tabs-1">Form Builder</a></li>
+                <li><a href="#tabs-2">Preview</a></li-->
+                <label>Next Page: </label>
+                <div id="nextForm" class="form-group col-md-3"></div>
             </ul>
             <div id="tabs-1">
                 <div id='builder'></div>
@@ -27,7 +37,7 @@ $.widget( "nmk.duploEditor", {
                 <div id="formio">No Preview Available!</div>
             </div>
             <div id="tabs-3">
-                <div id="json"></div>
+                <div id="json" style="display:none"></div>
             </div>
         </div>`);
         
@@ -49,12 +59,12 @@ $.widget( "nmk.duploEditor", {
             success: function(data) {
                 var html = '<button class="create-modal btn btn-success btn-sm">+ Add</button>';
                 $.each(data, function (index, value) {
-                    html += "<div class='row'><div class='col pageName' id='"+ value['id'] +"'>"+value['sheet_name']+"</div></div>";
+                    html += '<a href="#" class="list-group-item list-group-item-action py-2 ripple pageName" aria-current="true" id="'+ value['id'] +'">'+value['sheet_name']+'</a>';
                 });
-                $('#Dmanager').html(html);
+                $('#fileManager').html(html);
                 $( ".pageName" ).on( "click", function() {
-                    $(".pageName").parent().removeClass("active");
-                    $(this).parent().addClass("active");
+                    $(".pageName").removeClass("active");
+                    $(this).addClass("active");
                     self._getJSON(this);
                 });
                 self._contextMenu();
@@ -64,27 +74,45 @@ $.widget( "nmk.duploEditor", {
         $('<script>', { type : 'text/javascript', src : "../../js/override.js" }).appendTo('body');
     },
 
-    _getJSON: function(e) {
-        $.ajax({
-            type: 'GET',
-            dataType: "json",
-            contentType: 'application/json',
-            url: "../../sheet/json/" + e.id,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success: function(data) {
-                formBuilder(data);
-                Formio.createForm(document.getElementById('formio'), data);
-            },
-            error: function (textStatus, errorThrown) {
-                Formio.createForm(document.getElementById('formio'), {});
-                formBuilder();
-            }
+    _getNext: function(next){
+        var s = $("<select id='nextPage' class='form-control' name='nextPage' />");
+        $(s).appendTo("#nextForm");
+        $("<option />", {value: 0, text: "None"}).appendTo(s);
+        $( ".pageName" ).each(function( index ) {
+            if($(".pageName.active").attr("id") == $( this ).attr("id"))return;
+            $("<option />", {value: $( this ).attr("id"), text: $( this ).text()}).appendTo(s);
+            $("#nextPage > [value=" + next + "]").attr("selected", "true");
         });
+    },
+
+    _getJSON: function(e) {
+        /*if(localStorage.getItem($(".pageName.active").attr("id")) !== null){
+            builder.setForm(JSON.parse(localStorage.getItem($(".pageName.active").attr("id"))));
+            $("#nextPage").remove();
+            this._getNext();
+        }else{*/
+            var self = this;
+            $.ajax({
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json',
+                url: "../../sheet/json/" + e.id,
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function(data) {
+                    builder.setForm(JSON.parse(data.json));
+                    $("#nextPage").remove();
+                    self._getNext(data.next);
+                },
+                error: function (textStatus, errorThrown) {
+                    builder.setForm({components: []});
+                }
+            });
+        /*}*/
     },
 
     _contextMenu: function(){
         var self = this;
-        $('#Dmanager').append(`<div class='context-menu'>
+        $('#fileManager').append(`<div class='context-menu'>
           <ul>
              <li><span class='Rename'></span>Rename</li>
              <li><span class='Delete'></span>Delete</li>
@@ -92,8 +120,7 @@ $.widget( "nmk.duploEditor", {
           </ul>
         </div>
         <input type='hidden' value='' id='txt_id'>
-        <input type='hidden' value='' id='txt_name'>
-        `);
+        <input type='hidden' value='' id='txt_name'>`);
 
         // disable right click and show custom context menu
         $(".pageName").on('contextmenu', function (e) {          
@@ -108,7 +135,8 @@ $.widget( "nmk.duploEditor", {
             $(".context-menu").css({
                 top: top + "px",
                 left: left + "px",
-                display: 'block'
+                display: 'block',
+                zIndex: 111
             });
 
             // disable default context menu
@@ -159,6 +187,7 @@ $.widget( "nmk.duploEditor", {
                     data: {
                       "form": jsonElement.html(),
                       "id": titleid,
+                      "next": $("#nextPage").val(),
                       "sheet_name": $("#txt_name").val()
                     },
                     headers: {accept: 'application/json', 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -171,52 +200,5 @@ $.widget( "nmk.duploEditor", {
                 });
             }
         });
-    },
-
-    // Create a public method.
-    value: function( value ) {
- 
-        // No value passed, act as a getter.
-        if ( value === undefined ) {
- 
-            return this.options.value;
- 
-        // Value passed, act as a setter.
-        } else {
- 
-            this.options.value = this._constrain( value );
-            var progress = this.options.value + "%";
-            this.element.text( progress );
- 
-        }
- 
-    },
-
-    // Create a private method.
-    _constrain: function( value ) {
- 
-        if ( value > 100 ) {
-            value = 100;
-        }
- 
-        if ( value < 0 ) {
-            value = 0;
-        }
- 
-        return value;
-    },
-
-    _setOption: function( key, value ) {
-        this.options[ key ] = value;
-        this._update();
-    },
-
-    _update: function() {
-        var progress = this.options.value + "%";
-        this.element.text( progress );
-        if ( this.options.value == 100 ) {
-            this._trigger( "complete", null, { value: 100 } );
-        }
-    }
- 
+    } 
 });

@@ -13,9 +13,6 @@
                 background-color: #eaeaea;
                 cursor:pointer;
             }
-            .active{
-                background-color: #eaeaea;
-            }
         </style>
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
@@ -36,37 +33,36 @@
         </script>
     </head>
     <body class="antialiased">
+        <!--Main Navigation-->
         <header>
-            <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #eaeaea">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
                 <div class="container-fluid">
-                    <div class="collapse navbar-collapse" id="navbarExample01">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item active">
-                                <a class="navbar-brand" href="#">
-                                    <img src="{{ asset('logo.png') }}" alt="Logo">
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/project/list') }}">Projects</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Reports</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="navbar-brand" href="#">
+                                <img src="{{ asset('logo.png') }}" alt="Logo">
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/project/list') }}">Projects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Reports</a>
+                        </li>
+                    </ul>
                 </div>
             </nav>
-            <!-- Navbar -->
         </header>
-        <div class="relative items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg" id="root">
+        <!--Main Navigation-->
+
+        <div class="container-fluid my-4">
+            <div class="mb-5">
+                <div class="col" id="root">
                     {{ $slot }}
                 </div>
             </div>
         </div>
-        <footer>
+        <footer class="bg-primary text-white text-center text-lg-start">
             <div class="container">
                 <div class="row text-center">
                     <div class="col-md-4 box">
