@@ -485,7 +485,6 @@ Formio.Components.components.textfield.editForm = function() {
     };
   };
 
-  
   Formio.Components.components.radio.editForm = function() {
     return {
       components: [            
@@ -543,6 +542,11 @@ Formio.Components.components.textfield.editForm = function() {
           type: 'checkbox',
           key: 'disabled',
           label: 'Disabled'
+        },
+        {
+          type: 'textfield',
+          key: 'next',
+          label: 'Next'
         },
         {
           type: 'select',
@@ -626,3 +630,33 @@ Formio.Components.components.textfield.editForm = function() {
       ]
     };
   };
+
+  const Input = Formio.Components.components.button;
+
+  class MyComponent extends Input {
+      /**
+       * This is the default schema of your custom component. It will "derive"
+       * from the base class "schema" and extend it with its default JSON schema
+       * properties. The most important are "type" which will be your component
+       * type when defining new components.
+       *
+       * @param extend - This allows classes deriving from this component to 
+       *                 override the schema of the overridden class.
+       */
+       static schema(...extend) {
+        return Input.schema({
+            type: 'button',
+            label: 'Submit',
+            key: 'submit',
+            next: '',
+        }, ...extend);
+      }
+      get inputInfo() {
+          const info = super.inputInfo;
+          info.attr.id = this.component.next;
+          return info;
+      }
+  }
+
+  Formio.Components.components.button = MyComponent;
+  Formio.Components.setComponents(Formio.Components.components.button);

@@ -33,6 +33,8 @@ class Sheet extends Model
         'project_id',
         'sheet_name',
         'path',
+        'root',
+        'next',
         'format',
     ];
 }

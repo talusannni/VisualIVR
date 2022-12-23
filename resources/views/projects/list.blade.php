@@ -62,7 +62,11 @@
                             <td>{{$item->project_name}}</td>
                             <td>{{$item->created_at}}</td>
                             <td>{{$item->updated_at}}</td>
-                            <td><button onclick="location.href='{{ url('/project/design/'.$item->id) }}'" class="btn btn-success btn-sm"
+                            <td><button onclick="location.href='{{ url('/project/templates/'.$item->id) }}'" class="btn btn-success btn-sm"
+                                data-info="{{$item->id}}">
+                                <i class="fa fa-object-ungroup" aria-hidden="true"></i> Template
+                            </button>
+                            <button onclick="location.href='{{ url('/project/design/'.$item->id) }}'" class="btn btn-success btn-sm"
                                 data-info="{{$item->id}}">
                                 <i class="fa fa-magic" aria-hidden="true"></i> Design
                             </button>

@@ -1,4 +1,5 @@
 <x-layout>
+    <input type="hidden" id="pid" value="{{ $project_id }}"/>
     <!--script src="{{ asset("js/formio-pretty-checkboxes.min.js")}}"></script-->
     <style>
         /* Context menu */
@@ -117,7 +118,7 @@
                         //add error
                     }else {
                         $('#createModal').modal('hide');
-                        $('#fileManager').append('<a href="#" class="list-group-item list-group-item-action py-2 ripple pageName" aria-current="true" id="'+ data.id +'">'+$('#sname').val()+'</a>');
+                        $('#fileManager').append('<a href="#" class="list-group-item list-group-item-action py-2 ripple pageName" aria-current="true" id="'+ data.id +'"><span>'+$('#sname').val()+'</span></a>');
                     }
                 },
                 error: function (error) {

@@ -18,7 +18,9 @@ class Project extends Migration
           $table->increments('id');
           $table->string('project_name');
           $table->text('description')->nullable();
+          $table->integer('template_id')->unsigned();
           $table->index('id');
+          $table->foreign('template_id')->references('id')->on('templates')->onDelete('cascade');
           $table->timestamps();
         });
     }

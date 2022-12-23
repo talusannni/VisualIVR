@@ -24,12 +24,10 @@ $.widget( "nmk.duploEditor", {
         $('footer').css('margin-left', '200px');
         $( "<div>", { id: "Dcontent", "class": "col-sm-10" }).appendTo( this.element );
         $("#Dcontent").html(`<div id="tabs">
-            <ul>
-                <!--li><a href="#tabs-1">Form Builder</a></li>
-                <li><a href="#tabs-2">Preview</a></li-->
-                <label>Next Page: </label>
-                <div id="nextForm" class="form-group col-md-3"></div>
-            </ul>
+            <!--ul>
+                <li><a href="#tabs-1">Form Builder</a></li>
+                <li><a href="#tabs-2">Preview</a></li>
+            </ul-->
             <div id="tabs-1">
                 <div id='builder'></div>
             </div>
@@ -59,7 +57,11 @@ $.widget( "nmk.duploEditor", {
             success: function(data) {
                 var html = '<button class="create-modal btn btn-success btn-sm">+ Add</button>';
                 $.each(data, function (index, value) {
-                    html += '<a href="#" class="list-group-item list-group-item-action py-2 ripple pageName" aria-current="true" id="'+ value['id'] +'">'+value['sheet_name']+'</a>';
+                    html += '<a href="#" class="list-group-item list-group-item-action py-2 ripple pageName" aria-current="true" id="'+ value['id'] +'">';
+                    if(value['root']){
+                        html += "<span class='fa fa-arrow-circle-right'></span>";
+                    }
+                    html += '<span>'+value['sheet_name']+'</span></a>';
                 });
                 $('#fileManager').html(html);
                 $( ".pageName" ).on( "click", function() {
@@ -72,17 +74,6 @@ $.widget( "nmk.duploEditor", {
         });
         //$("<link>", { rel: "stylesheet", type: "text/css", href: "../../css/formio.full.min.css" }).appendTo("head");
         $('<script>', { type : 'text/javascript', src : "../../js/override.js" }).appendTo('body');
-    },
-
-    _getNext: function(next){
-        var s = $("<select id='nextPage' class='form-control' name='nextPage' />");
-        $(s).appendTo("#nextForm");
-        $("<option />", {value: 0, text: "None"}).appendTo(s);
-        $( ".pageName" ).each(function( index ) {
-            if($(".pageName.active").attr("id") == $( this ).attr("id"))return;
-            $("<option />", {value: $( this ).attr("id"), text: $( this ).text()}).appendTo(s);
-            $("#nextPage > [value=" + next + "]").attr("selected", "true");
-        });
     },
 
     _getJSON: function(e) {
@@ -100,8 +91,6 @@ $.widget( "nmk.duploEditor", {
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function(data) {
                     builder.setForm(JSON.parse(data.json));
-                    $("#nextPage").remove();
-                    self._getNext(data.next);
                 },
                 error: function (textStatus, errorThrown) {
                     builder.setForm({components: []});
@@ -114,6 +103,7 @@ $.widget( "nmk.duploEditor", {
         var self = this;
         $('#fileManager').append(`<div class='context-menu'>
           <ul>
+             <li><span class='Begin'></span>Begin</li>
              <li><span class='Rename'></span>Rename</li>
              <li><span class='Delete'></span>Delete</li>
              <li><span class='Save'></span>Save</li>
@@ -126,7 +116,7 @@ $.widget( "nmk.duploEditor", {
         $(".pageName").on('contextmenu', function (e) {          
             var id = this.id;
             $("#txt_id").val(id);
-            $("#txt_name").val($(this).html());
+            $("#txt_name").val($(this).text());
   
             var top = e.pageY+5;
             var left = e.pageX;
@@ -156,7 +146,29 @@ $.widget( "nmk.duploEditor", {
             var titleid = $('#txt_id').val();
             $( "#"+ titleid ).css( "background-color", className );
             $(".context-menu").hide();
-            if(className == "Rename"){
+            if(className == "Begin"){
+                $.ajax({
+                    type: 'POST',
+                    url: "/sheet/root",
+                    data: {
+                        "id": $('#txt_id').val(),
+                        "project_id": $('#pid').val(),
+                        "root": 1
+                    },
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    success: function(data) {
+                        if (data.errors){
+                            //add error
+                        }else {
+                            $(".pageName > .fa.fa-arrow-circle-right").remove();
+                            $( "#"+ titleid ).prepend( "<span class='fa fa-arrow-circle-right'></span>" );
+                        }
+                    },
+                    error: function (error) {
+                        alert(error.message);
+                    }
+                });
+            }else if(className == "Rename"){
                 $('#footer_action_button').text("Rename");
                 $('.actionBtn').addClass('btn-success');
                 $('.actionBtn').removeClass('btn-danger');

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Template;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+
 
 class ProjectController extends Controller
 {
@@ -36,14 +38,15 @@ class ProjectController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display the specified resource.
      *
-     * @param  \App\Http\Requests\StoreProjectRequest  $request
+     * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProjectRequest $request)
+    public function templates(Project $project)
     {
-        //
+        $templates = Template::all();
+        return view('projects/template', ['template' => $project->template_id, 'id' => $project->id, 'templates' => $templates]);
     }
 
     /**
@@ -54,18 +57,22 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        $templates = Template::all();
+        return view('projects/process', ['template' => $project->template_id, 'id' => $project->id, 'templates' => $templates]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update the specified resource in storage.
      *
+     * @param  \App\Http\Requests\UpdateProjectRequest  $request
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project)
+    public function template(UpdateProjectRequest $request, Project $project)
     {
-        //
+        // Update
+        DB::table('projects')->where('id',$project->id)->update(['template_id' => $request->get('template_id')]);
+        return redirect()->route('Project.list');
     }
 
     /**
@@ -82,16 +89,5 @@ class ProjectController extends Controller
         return response()->json([
             'message'=>'Project Updated Successfully!!'
         ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Project $project)
-    {
-        //
     }
 }

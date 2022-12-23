@@ -34,6 +34,7 @@ Route::get('/sheet/json/{sheet}', [SheetController::class, 'show'])->name('Sheet
 Route::post('/sheet/store', [SheetController::class, 'store'])->name('Sheet.store');
 Route::post('/sheet/create', [SheetController::class, 'create'])->name('Sheet.create');
 Route::post('/sheet/update', [SheetController::class, 'update'])->name('Sheet.update');
+Route::post('/sheet/root', [SheetController::class, 'setRoot'])->name('Sheet.setRoot');
 Route::post('/sheet/delete', [SheetController::class, 'destroy'])->name('Sheet.delete');
 
 //project route files
@@ -52,4 +53,7 @@ Route::post ( '/project/delete', function (Request $request) {
 Route::get('/project/design/{project_id}', function($project_id){
     return view ( 'projects.publish' )->with ( 'project_id', $project_id );
 })->name('Project.design');
+Route::get('/project/templates/{project}', [ProjectController::class, 'templates'])->name('Project.templates');
+Route::post('/project/template/{project}', [ProjectController::class, 'template'])->name('Project.template');
+Route::get('/vivr/{project}', [ProjectController::class, 'show'])->name('Project.show');
 //Route::post('/project/delete', [ProjectController::class, 'destroy'])->name('Project.delete');

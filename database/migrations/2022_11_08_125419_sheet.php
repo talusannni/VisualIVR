@@ -20,6 +20,7 @@ class Sheet extends Migration
         $table->text('path')->nullable();
         $table->integer('next')->unsigned()->default('0');
         $table->integer('project_id')->unsigned();
+        $table->tinyInteger('root')->default('0');
         $table->index('id');
         $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
         $table->timestamps();
