@@ -116,8 +116,21 @@ $.widget( "nmk.duploEditor", {
             $("#txt_id").val(id);
             $("#txt_name").val($(this).text());
   
-            var top = e.pageY+5;
-            var left = e.pageX;
+            var windowHeight = $(window).height()/2;
+            var windowWidth = $(window).width()/2;
+            if(e.clientY > windowHeight && e.clientX <= windowWidth) {
+              var left = e.clientX;
+              var top = $(window).height()-e.clientY;
+            } else if(e.clientY > windowHeight && e.clientX > windowWidth) {
+                var left = $(window).width()-e.clientX;
+                var top = $(window).height()-e.clientY;
+            } else if(e.clientY <= windowHeight && e.clientX <= windowWidth) {
+                var left = e.clientX;
+                var top = e.clientY;
+            } else {
+                var left = $(window).width()-e.clientX;
+                var top = e.clientY;
+            }
 
             // Show contextmenu
             $(".context-menu").css({
