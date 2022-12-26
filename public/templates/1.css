@@ -1,0 +1,5 @@
+.formarea{
+    background-image: -moz-linear-gradient( 136deg,rgb(254,225,64) 0%,rgb(250,112,154) 100%);
+    background-image: -webkit-linear-gradient( 136deg,rgb(254,225,64) 0%,rgb(250,112,154) 100%);
+    background-image: -ms-linear-gradient( 136deg,rgb(254,225,64) 0%,rgb(250,112,154) 100%);
+}

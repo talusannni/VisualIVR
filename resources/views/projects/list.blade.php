@@ -1,4 +1,12 @@
 <x-layout>
+    <style>
+    td.project-name a{
+        display:none;
+    }
+    td.project-name:hover a {
+        display:contents;
+    }
+    </style>
     <div id="app">
         <div id="editModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -57,9 +65,9 @@
                     </thead>
                     <tbody>
                         @foreach($data as $item)
-                        <tr class="item{{$item->id}}">
+                        <tr class="{{$item->id}}">
                             <td>{{$item->id}}</td>
-                            <td>{{$item->project_name}}</td>
+                            <td class="project-name">{{$item->project_name}} <a href="#" class="copyUrl"><i class="fa fa-link" aria-hidden="true"></i></a></td>
                             <td>{{$item->created_at}}</td>
                             <td>{{$item->updated_at}}</td>
                             <td><button onclick="location.href='{{ url('/project/templates/'.$item->id) }}'" class="btn btn-success btn-sm"
@@ -77,7 +85,19 @@
                             <button class="delete-modal btn btn-danger btn-sm"
                                 data-info="{{$item->id}},{{$item->project_name}}">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
-                            </button></td>
+                            </button>
+                            @if($item->status == "Created")
+                            <button class="btn btn-warning btn-sm"
+                                data-info="{{$item->id}},{{$item->project_name}}">
+                                <i class="fa fa-play" aria-hidden="true"></i> Start
+                            </button>
+                            @elseif($item->status == "Started")
+                            <button class="btn btn-dark btn-sm"
+                                data-info="{{$item->id}},{{$item->project_name}}">
+                                <i class="fa fa-pause" aria-hidden="true"></i> Stop
+                            </button>
+                            @endif
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -200,6 +220,27 @@
 
         $(document).on('click', '.close', function() {
             $('#editModal').modal('hide');
+        });
+
+        $(document).on('click', '.copyUrl', function() {
+            const id = $(this).parent().siblings(':first-child').html();
+            var txt = "{{ route('vivr.exec', ['project_id' => ':id']) }}";
+            txt = txt.replace(':id', id);
+            navigator.clipboard.writeText(txt);
+            $("header").animate({
+                height: '+=72px'
+            }, 300);
+            $('<div class="alert alert-success">Url Copied to Clipboard!</div>').hide().appendTo('header').fadeIn(1000);
+            
+            $(".alert").delay(3000).fadeOut(
+            "normal",
+            function(){
+                $(this).remove();
+            });
+            
+            $("header").delay(4000).animate({
+                height: '-=72px'
+            }, 300);
         });
     </script>
 </x-layout>

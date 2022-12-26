@@ -55,7 +55,7 @@ class SheetController extends Controller
     public function store(StoreSheetRequest $request)
     {
         try{
-            $path = Hash::make($request->get('sheet_name').$request->get('id'));
+            $path = $request->get('id');
             Storage::disk('local')->put($path, $request->get('form'));
             $data = $request->except('_method','_token','submit','form');
             $sheet = Sheet::find($request->get('id'));

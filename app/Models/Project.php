@@ -39,7 +39,9 @@ class Project extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'project_name',
         'description',
+        'template_id',
+        'status',
     ];
 }

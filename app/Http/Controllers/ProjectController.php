@@ -82,6 +82,20 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
+    public function getTemplate(UpdateProjectRequest $request, Project $project)
+    {
+        return response()->json([
+            $project
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateProjectRequest  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\Response
+     */
     public function update(UpdateProjectRequest $request, Project $project)
     {
         // Update

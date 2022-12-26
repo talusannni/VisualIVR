@@ -175,6 +175,18 @@
                 }
             });
         });
+        $('body').on('click', '#heading-advanced', function() {
+            $("#group-advanced").toggle();
+        });
+        $('body').on('click', '#heading-layout', function() {
+            $("#group-layout").toggle();
+        });
+        $('body').on('click', '#heading-data', function() {
+            $("#group-data").toggle();
+        });
+        $('body').on('click', '#heading-basic', function() {
+            $("#group-basic").toggle();
+        });
     </script>
     <div id="duploEditor"></div>
     <!--script src='{{ asset('js/override.js') }}'></script-->

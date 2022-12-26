@@ -55,5 +55,8 @@ Route::get('/project/design/{project_id}', function($project_id){
 })->name('Project.design');
 Route::get('/project/templates/{project}', [ProjectController::class, 'templates'])->name('Project.templates');
 Route::post('/project/template/{project}', [ProjectController::class, 'template'])->name('Project.template');
+Route::get('/project/template/{project}', [ProjectController::class, 'getTemplate'])->name('Project.getTemplate');
 Route::get('/vivr/{project}', [ProjectController::class, 'show'])->name('Project.show');
 //Route::post('/project/delete', [ProjectController::class, 'destroy'])->name('Project.delete');
+
+Route::get('/Manage/{project_id}/{sheet_id?}', [ManagerController::class, 'index'])->name('vivr.exec');

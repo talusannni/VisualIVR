@@ -42,7 +42,28 @@ $.widget( "nmk.duploEditor", {
         $( function() {
             $( "#tabs" ).tabs();
         } );
+        this._getTemplate();
         this._getList();
+    },
+
+    _getTemplate: function() {
+        var self = this;
+        //get list using listURL
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json',
+            url: "../../project/template/" + $("#pid").val(),
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success: function(data) {
+                var stylesheet = $("<link>", {
+                    rel: "stylesheet",
+                    type: "text/css",
+                    href: "../../templates/"+data[0].template_id+".css"
+                });
+                stylesheet.appendTo("head");
+            }
+        });
     },
 
     _getList: function() {
