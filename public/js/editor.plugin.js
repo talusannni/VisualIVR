@@ -77,11 +77,9 @@ $.widget( "nmk.duploEditor", {
     },
 
     _getJSON: function(e) {
-        /*if(localStorage.getItem($(".pageName.active").attr("id")) !== null){
+        if(localStorage.getItem($(".pageName.active").attr("id")) !== null){
             builder.setForm(JSON.parse(localStorage.getItem($(".pageName.active").attr("id"))));
-            $("#nextPage").remove();
-            this._getNext();
-        }else{*/
+        }else{
             var self = this;
             $.ajax({
                 type: 'GET',
@@ -96,7 +94,7 @@ $.widget( "nmk.duploEditor", {
                     builder.setForm({components: []});
                 }
             });
-        /*}*/
+        }
     },
 
     _contextMenu: function(){
@@ -204,7 +202,7 @@ $.widget( "nmk.duploEditor", {
                     },
                     headers: {accept: 'application/json', 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                   success: function (response) {
-                    
+                    localStorage.removeItem($(".pageName.active").attr("id"));
                   },
                   error: function (error) {
                   
