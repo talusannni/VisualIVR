@@ -31,9 +31,9 @@ $.widget( "nmk.duploEditor", {
             <div id="tabs-1">
                 <div id='builder'></div>
             </div>
-            <div id="tabs-2">
+            <!--div id="tabs-2">
                 <div id="formio">No Preview Available!</div>
-            </div>
+            </div-->
             <div id="tabs-3">
                 <div id="json" style="display:none"></div>
             </div>
@@ -202,7 +202,7 @@ $.widget( "nmk.duploEditor", {
                     },
                     headers: {accept: 'application/json', 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                   success: function (response) {
-                    localStorage.removeItem($(".pageName.active").attr("id"));
+                    localStorage.removeItem(titleid);
                   },
                   error: function (error) {
                   
