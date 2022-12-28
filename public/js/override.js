@@ -66,7 +66,7 @@ var setDisplay = function(display) {
 
 builder.instance.ready.then(onReady);
 
-Formio.Components.components.textfield.editForm = function() {
+/*Formio.Components.components.textfield.editForm = function() {
     return {
       components: [            
         {
@@ -364,15 +364,7 @@ Formio.Components.components.textfield.editForm = function() {
                 {
                     "value": "values",
                     "label": "Values"
-                }/*,
-                {
-                    "value": "url",
-                    "label": "URL"
-                },
-                {
-                    "value": "json",
-                    "label": "Raw JSON"
-                }*/
+                }
             ],
           }
         },
@@ -579,7 +571,7 @@ Formio.Components.components.textfield.editForm = function() {
         }
       ]
     };
-  };
+  };*/
 
   const Input = Formio.Components.components.button;
 

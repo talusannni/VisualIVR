@@ -42,6 +42,9 @@ class Project extends Model
         'project_name',
         'description',
         'template_id',
+        'logo',
+        'logo_type',
+        'logo_name',
         'status',
     ];
 }

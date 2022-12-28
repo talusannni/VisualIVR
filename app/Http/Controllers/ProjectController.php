@@ -98,10 +98,29 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
+        $base64 = NULL;
+        if($request->hasFile('logo')){
+            $path = $request->file('logo')->getRealPath();
+            $logo = file_get_contents($path);
+            $base64 = base64_encode($logo);
+            $mime = $request->file('logo')->getClientMimeType();
+            $filename = $request->file('logo')->getClientOriginalName();
+        }
         // Update
-        DB::table('projects')->where('id',$request->get('id'))->update(['project_name' => $request->get('project_name'), 'description' => $request->get('description')]);
+        DB::table('projects')->where('id',$request->get('id'))->update(['project_name' => $request->get('project_name'), 'description' => $request->get('description'), 'logo' => $base64, 'logo_type' => $mime, 'logo_name' => $filename]);
         return response()->json([
             'message'=>'Project Updated Successfully!!'
         ]);
+    }
+
+    public function download(Project $project)
+    {
+        $contents = $project->logo;
+        return response("data:image/" . $project->logo_type . ";base64,".$contents)
+                         ->header('Cache-Control', 'no-cache private')
+                         ->header('Content-Description', 'File Transfer')
+                         ->header('Content-length', strlen($contents))
+                         ->header('Content-Disposition', 'attachment; filename='.$project->logo_name)
+                         ->header('Content-Transfer-Encoding', 'binary');
     }
 }

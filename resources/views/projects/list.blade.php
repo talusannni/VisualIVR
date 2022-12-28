@@ -17,17 +17,24 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal" role="form">
+                        <form class="form-horizontal" role="form" enctype="multipart/form-data">
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="name">Name:</label>
+                                <input type="hidden" class="form-control" id="id" name="id"/>
+                                <label class="control-label col-sm-2" for="project_name">Name:</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="pname" required>
+                                    <input type="text" class="form-control" id="project_name" name="project_name" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="desc">Description:</label>
+                                <label class="control-label col-sm-2" for="description">Description:</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" id="pdesc"></textarea>
+                                    <textarea class="form-control" id="description" name="description"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="logo">Logo:</label>
+                                <div class="col-sm-10">
+                                    <input type="file" id="logo" name="logo">
                                 </div>
                             </div>
                         </form>
@@ -122,8 +129,8 @@
             $('.form-horizontal').show();
             var stuff = $(this).data('info').split(',');
             $('.pid').text(stuff[0]);
-            $('#pname').val(stuff[1]);
-            $('#pdesc').val(stuff[2]);
+            $('#project_name').val(stuff[1]);
+            $('#description').val(stuff[2]);
             $('#editModal').modal('show');
         });
 
@@ -133,8 +140,8 @@
             $('.actionBtn').removeClass('btn-danger');
             $('.actionBtn').removeClass('delete');
             $('.actionBtn').addClass('create');
-            $('#pname').val('');
-            $('#pdesc').val('');
+            $('#project_name').val('');
+            $('#description').val('');
             $('.modal-title').text('Create New Project');
             $('.deleteContent').hide();
             $('.form-horizontal').show();
@@ -166,15 +173,16 @@
 
         $('.modal-footer').on('click', '.edit', function() {
             const Url = @json(route('Project.update'));
+            $('#id').val($('.pid').text());
+            var form = $('form')[0];
+            var data = new FormData(form);
             $.ajax({
                 type: 'POST',
                 url: Url,
-                dataType: 'json',
-                data: {
-                    "id": $(".pid").text(),
-                    "project_name": $('#pname').val(),
-                    "description": $('#pdesc').val()
-                },
+                data: data,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function(data) {
                     if (data.errors){

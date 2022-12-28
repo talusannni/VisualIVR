@@ -102,6 +102,28 @@
             $('#createModal').modal('hide');
         });
 
+        /*const Url = @json(route('Project.logo', ['project' => $project_id]));
+        $.ajax({
+                type: 'GET',
+                url: Url,
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function(data) {
+                    if (data.errors){
+                    }else {
+                        var img = $('<img />').attr({
+            'src': data,
+            'alt': 'JSFiddle logo',
+            'title': 'JSFiddle logo',
+            'width': 250
+        }).appendTo('body');
+                        console.log(data);
+                    }
+                },
+                error: function (error) {
+                    alert(error.message);
+                }
+            });*/
+
         $('.modal-footer').on('click', '.create', function() {
             const Url = @json(route('Sheet.create'));
             $.ajax({
