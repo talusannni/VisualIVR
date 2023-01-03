@@ -28,9 +28,21 @@ class ProjectController extends Controller
      */
     public function create(StoreProjectRequest $request)
     {
+        $base64 = NULL;
+        if($request->hasFile('logo')){
+            $path = $request->file('logo')->getRealPath();
+            $logo = file_get_contents($path);
+            $base64 = base64_encode($logo);
+            $mime = $request->file('logo')->getClientMimeType();
+            $filename = $request->file('logo')->getClientOriginalName();
+        }
+
         $project = new Project();
         $project->project_name = $request->get('project_name');
         $project->description = $request->get('description');
+        $project->logo = $base64;
+        $project->logo_type = $mime;
+        $project->logo_name = $filename;
         $project->save();
         return response()->json([
             'message'=>'Project Updated Successfully!!'

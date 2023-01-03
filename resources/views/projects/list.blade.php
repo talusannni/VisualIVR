@@ -150,14 +150,15 @@
 
         $('.modal-footer').on('click', '.create', function() {
             const Url = @json(route('Project.create'));
+            var form = $('form')[0];
+            var data = new FormData(form);
             $.ajax({
                 type: 'POST',
                 url: Url,
-                dataType: 'json',
-                data: {
-                    "project_name": $('#pname').val(),
-                    "description": $('#pdesc').val()
-                },
+                data: data,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function(data) {
                     if (data.errors){
