@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sheet;
+use App\Models\Project;
 use Illuminate\Http\Request;
-use Project;
+use Illuminate\Support\Facades\DB;
 
 class ManagerController extends Controller
 {
@@ -12,8 +14,8 @@ class ManagerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Project $project)
+    public function index(Project $project, Sheet $sheet)
     {
-        return view('manager/process', ['template' => $project->template_id, 'id' => $project->id]);
+        return view('manager/process', ['project' => $project, 'sheet' => $sheet]);
     }
 }

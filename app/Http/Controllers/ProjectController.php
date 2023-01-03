@@ -68,6 +68,19 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
+    public function sheets(UpdateProjectRequest $request, Project $project)
+    {
+        $sheets = DB::table('sheets')->select('id AS value','sheet_name AS label')->where('project_id',$project->id)->get();
+        return response()->json($sheets);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateProjectRequest  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\Response
+     */
     public function template(UpdateProjectRequest $request, Project $project)
     {
         // Update

@@ -95,6 +95,7 @@ $.widget( "nmk.duploEditor", {
         });
         //$("<link>", { rel: "stylesheet", type: "text/css", href: "../../css/formio.full.min.css" }).appendTo("head");
         $('<script>', { type : 'text/javascript', src : "../../js/override.js" }).appendTo('body');
+        $('<script>', { type : 'text/javascript', src : "../../js/button.override.js" }).appendTo('body');
     },
 
     _getJSON: function(e) {
